@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="oprend_bead"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="oprend_bead">
+				<Option output="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/oprend_bead" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 oprend_bead"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="oprend_bead/fast">
+				<Option output="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/oprend_bead" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 oprend_bead/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/App.c">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/App.h">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/io/FileHandler.c">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/io/FileHandler.h">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/lib/Cache.c">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/lib/Cache.h">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/lib/Event.c">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/lib/Event.h">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/lib/Patient.c">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/lib/Patient.h">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/main.c">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/types/Defines.c">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/types/Defines.h">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/types/Enums.h">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/util/CircularBuffer.c">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/util/CircularBuffer.h">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/util/Pair.H">
+			<Option target="oprend_bead"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

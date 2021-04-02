@@ -1,0 +1,10 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" /mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead
+-- Configuring done
+-- Generating done
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_CXX_COMPILER
+
+
+-- Build files have been written to: /mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead

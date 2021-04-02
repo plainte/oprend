@@ -1,0 +1,3 @@
+/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/CMakeFiles/edit_cache.dir
+/mnt/c/Users/molna/Desktop/programming/cpp/oprend_bead/CMakeFiles/oprend_bead.dir
