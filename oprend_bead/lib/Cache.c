@@ -4,13 +4,16 @@
 #include "Cache.h"
 #include <stdio.h>
 
-void add_patient(cache_t* cache, patient_t* patient)
+void add_patient(cache_t* cache, patient_t* patient, bool log)
 {
   if (cache->size + 1 <= cache->capacity)
   {
     cache->data[cache->size] = *patient;
-    printf("\nAdded patient: ");
-    print_patient(&cache->data[cache->size]);
+    if (log)
+    {
+      printf("\nAdded patient: ");
+      print_patient(&cache->data[cache->size]);
+    }
     ++cache->size;
   }
   else
@@ -44,7 +47,7 @@ void remove_patient(cache_t* cache, size_t index)
   }
   else
   {
-    printf("\nCurrent cache size: %zu", cache->size);
+    //printf("\nCurrent cache size: %zu", cache->size);
     printf("\nRemoving patient: ");
     print_patient(&cache->data[index]);
     for (size_t i = index; i < cache->size - 1; ++i)
@@ -52,7 +55,7 @@ void remove_patient(cache_t* cache, size_t index)
       cache->data[index] = cache->data[index + 1];
     }
     --cache->size;
-    printf("New cache size: %zu\n", cache->size);
+    //printf("New cache size: %zu\n", cache->size);
   }
 
 }

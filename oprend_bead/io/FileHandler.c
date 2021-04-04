@@ -9,7 +9,7 @@ FILE* open_file(char* option)
 {
   char file_name[15] = "./patients.bin";
   FILE* fptr = fopen(file_name, option);
-  return fptr;
+  return fptr == NULL ? NULL : fptr;
 }
 
 
@@ -42,8 +42,8 @@ void read_file(FILE* fptr, cache_t* cache)
       while(cache->size != cache->capacity && fread(&patient, sizeof(patient_t), 1, fptr))
       {
         //printf("Read patient: ");
-        add_patient(cache, &patient);
-        print_patient(&patient);
+        add_patient(cache, &patient, false);
+        //print_patient(&patient);
       }
     }
   }

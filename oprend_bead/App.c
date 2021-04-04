@@ -57,6 +57,10 @@ return_code_t get_year_input(uint16_t* year_of_birth)
 {
   uint8_t tries = 0;
   do {
+    if (tries > 0)
+    {
+      printf("Invalid input!\n");
+    }
     printf("Please enter patient's year of birth: ");
     scanf("%hd", year_of_birth);
     while ((getchar()) != '\n');
@@ -71,18 +75,36 @@ return_code_t get_year_input(uint16_t* year_of_birth)
   return SUCCESS;
 }
 
-void get_name_input(char* name)
+return_code_t get_name_input(char* name)
 {
-  printf("\nPlease enter patient's name (max 100 characters): ");
-  scanf("%[^\n]s", name);
-  while ((getchar()) != '\n');
+  uint8_t tries = 0;
+  do {
+    if (tries > 0)
+    {
+      printf("Invalid input!\n");
+    }
+    printf("\nPlease enter patient's name (max 100 characters): ");
+    scanf("%[^\n]s", name);
+    while ((getchar()) != '\n');
+    ++tries;
+  } while (strcmp(name, "") == 0 && tries != 3);
+
+  if (tries == 3 && strcmp(name, "") != 0) {
+    printf("Too many invalid input, aborting...");
+    return VALIDATION_FAILURE;
+  }
+  return SUCCESS;
 }
 
 return_code_t get_phone_number_input(char* phone_number)
 {
   uint8_t tries = 0;
   do {
-    printf("Please enter patient's phone number: ");
+    if (tries > 0)
+    {
+      printf("Invalid input!\n");
+    }
+    printf("Please enter patient's phone number [valid format 36701111111]: ");
     scanf("%s", phone_number);
     while ((getchar()) != '\n');
     ++tries;
@@ -100,6 +122,10 @@ return_code_t get_paid_input(char* ch)
 {
   uint8_t tries = 0;
   do {
+    if (tries > 0)
+    {
+      printf("Invalid input!\n");
+    }
     printf("Please enter whether it's paid or not [y/n]: ");
     scanf("%c", ch);
     while ((getchar()) != '\n');
@@ -132,7 +158,8 @@ void handle_add_option()
   char phone_number[PHONE_NUMBER_SIZE] = "";
   char ch = '\0';
 
-  get_name_input(name);
+  rc = get_name_input(name);
+  if (rc != SUCCESS) return;
   rc = get_year_input(&year_of_birth);
   if (rc != SUCCESS) return;
   rc = get_phone_number_input(phone_number);
@@ -200,7 +227,7 @@ void show_modify_options()
   printf(" -year of birth: y\n");
   printf(" -phone number: p\n");
   printf(" -paid: o\n");
-  printf("For example: yo\n");
+  printf("For example: yo [max 4 chars]\n");
 }
 
 void handle_modify_input(patient_t* current_patient, size_t modify_index)
@@ -212,6 +239,7 @@ void handle_modify_input(patient_t* current_patient, size_t modify_index)
   char ch = '\0';
 
   char options[4] = "";
+  memset(options, 0, strlen(options));
   scanf("%s", options);
   while ((getchar()) != '\n');
   for (size_t i = 0; i < strlen(options) && options[i] != '\0'; ++i)
@@ -220,7 +248,8 @@ void handle_modify_input(patient_t* current_patient, size_t modify_index)
     {
       case 'n':
         printf("You've selected {name} change!\n");
-        get_name_input(name);
+        rc = get_name_input(name);
+        if (rc != SUCCESS) return;
         break;
       case 'y':
         printf("You've selected {year of birth} change!\n");
@@ -238,7 +267,7 @@ void handle_modify_input(patient_t* current_patient, size_t modify_index)
         if (rc != SUCCESS) return;
         break;
       default:
-        printf("Skipping invalid option: %c", options[i]);
+        continue;
     }
   }
   return_code_patient_pair_t rc_patient_pair = create_patient(
@@ -269,7 +298,7 @@ size_patient_pair_t lookup_patient(const char* key)
     {
       pair.first = i;
       pair.second = &cache.data[i];
-      printf("Found patient at index %ld\n", pair.first);
+      //printf("Found patient at index %ld\n", pair.first);
       pthread_mutex_unlock(&lock);
       break;
     }
@@ -302,14 +331,21 @@ void handle_modify_option()
 
 void handle_show_option()
 {
-  printf("Please see all the records below:\n\n");
-  pthread_mutex_lock(&lock);
-  for (size_t i = 0; i < cache.size; ++i)
+  if (cache.size == 0)
   {
-    print_patient(&cache.data[i]);
+    printf("We don't have records yet!\n\n");
   }
-  printf("\n");
-  pthread_mutex_unlock(&lock);
+  else
+  {
+    printf("Please see all the records below:\n\n");
+    pthread_mutex_lock(&lock);
+    for (size_t i = 0; i < cache.size; ++i)
+    {
+      print_patient(&cache.data[i]);
+    }
+    printf("\n");
+    pthread_mutex_unlock(&lock);
+  }
 }
 
 void handle_invalid_input()
@@ -344,6 +380,7 @@ bool handle_user_input()
       handle_show_option();
       break;
     case 'e':
+      printf("Good bye!\n");
       handle_exit_option();
       return false;
     case 'h':
@@ -358,20 +395,17 @@ bool handle_user_input()
 
 void* main_handler()
 {
-  pthread_mutex_lock(&lock);
-  //printf("Initializing cache...\n");
+  //printf("Main: Initializing cache...\n");
   cache.size = 0;
   cache.capacity = INITIAL_CACHE_SIZE;
-  //printf("Initializing buffer...\n");
+  //printf("Main: Initializing buffer...\n");
   buffer = initialize_buffer();
-  pthread_mutex_unlock(&lock);
 
   bool running = true;
-  printf("Welcome to our London Data Center!\n\n");
+  printf("Welcome to our London Data Center! To see available commands please press 'h'\n\n");
 
   while(running)
   {
-    show_command_options();
     running = handle_user_input();
   }
   return NULL;
@@ -382,10 +416,10 @@ void wait_for_buffer_ready()
   bool running = true;
   while (running)
   {
-    //printf("Waiting for buffer...\n");
+    //printf("Reflex: Waiting for buffer...\n");
     if (buffer->data != NULL)
     {
-      //printf("Buffer is ready...\n");
+      //printf("Reflex: Buffer is ready...\n");
       return;
     }
     sleep(1);
@@ -404,7 +438,7 @@ void try_to_read_buffer(event_t* events, size_t i)
 void process_add_event(event_t* event)
 {
   pthread_mutex_lock(&lock);
-  add_patient(&cache, event->patient);
+  add_patient(&cache, event->patient, true);
   pthread_mutex_unlock(&lock);
 }
 

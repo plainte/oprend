@@ -13,6 +13,6 @@ typedef struct Cache {
 } cache_t;
 
 
-void add_patient(cache_t* cache, patient_t* patient);
+void add_patient(cache_t* cache, patient_t* patient, bool log);
 void modify_patient(cache_t* cache, patient_t* patient, size_t index);
 void remove_patient(cache_t* cache, size_t index);

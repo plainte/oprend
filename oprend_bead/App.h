@@ -53,7 +53,7 @@ size_patient_pair_t lookup_patient(const char* key);
 
 //validation
 return_code_t get_year_input(uint16_t* year_of_birth);
-void get_name_input(char* name);
+return_code_t get_name_input(char* name);
 return_code_t get_phone_number_input(char* phone_number);
 return_code_t get_paid_input(char* ch);
 
