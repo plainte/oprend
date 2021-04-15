@@ -9,4 +9,4 @@ set(CMAKE_BUILD_TYPE Debug)
 
 add_executable(oprend_bead main.c lib/Patient.h lib/Patient.c types/Enums.h io/FileHandler.h io/FileHandler.c
         lib/Event.h util/CircularBuffer.h util/CircularBuffer.c util/Pair.H types/Defines.h App.h App.c lib/Event.c
-        types/Defines.c lib/Cache.h lib/Cache.c)
+        types/Defines.c lib/Cache.h lib/Cache.c lib/Bus.h lib/Bus.c)

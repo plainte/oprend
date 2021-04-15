@@ -39,6 +39,20 @@ void modify_patient(cache_t* cache, patient_t* patient, size_t index)
   }
 }
 
+void mark_patient_vaccinated(cache_t* cache, size_t index)
+{
+  if (cache->size <= index)
+  {
+    printf("\nERROR: index above cache size");
+  }
+  else
+  {
+    printf("\nVaccinated patient: ");
+    cache->data[index].vaccinated = true;
+    print_patient(&cache->data[index]);
+  }
+}
+
 void remove_patient(cache_t* cache, size_t index)
 {
   if (cache->size == 0)
@@ -52,7 +66,7 @@ void remove_patient(cache_t* cache, size_t index)
     print_patient(&cache->data[index]);
     for (size_t i = index; i < cache->size - 1; ++i)
     {
-      cache->data[index] = cache->data[index + 1];
+      cache->data[i] = cache->data[i + 1];
     }
     --cache->size;
     //printf("New cache size: %zu\n", cache->size);

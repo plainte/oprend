@@ -15,6 +15,7 @@ typedef struct Patient {
     uint16_t year_of_birth;
     char phone_number[PHONE_NUMBER_SIZE];
     bool paid;
+    bool vaccinated;
 } patient_t;
 
 Pair(return_code_t, patient_t, return_code_, patient);

@@ -17,10 +17,9 @@ void exit_app(return_code_t rc)
   exit(EXIT_FAILURE);
 }
 
-circular_buffer_t* initialize_buffer()
+void initialize_buffer()
 {
-  //alloc circular buffer
-  circular_buffer_t* buffer = allocate_circular_buffer_t();
+  buffer = allocate_circular_buffer_t();
   if (!buffer) {
     exit_app(ALLOCATION_FAILURE);
   }
@@ -32,7 +31,6 @@ circular_buffer_t* initialize_buffer()
   if (rc != SUCCESS) {
     exit_app(rc);
   }
-  return buffer;
 }
 
 void deallocate_buffer(circular_buffer_t* buffer)
@@ -48,6 +46,7 @@ void show_command_options()
   printf(" -Modify patient: m\n");
   printf(" -Remove patient: r\n");
   printf(" -Show all records: s\n");
+  printf(" -Simulate day: n\n");
   printf(" -Exit: e\n");
   printf(" -Help: h\n");
   printf("Please select a key to continue: ");
@@ -63,13 +62,13 @@ return_code_t get_year_input(uint16_t* year_of_birth)
     }
     printf("Please enter patient's year of birth: ");
     scanf("%hd", year_of_birth);
-    while ((getchar()) != '\n');
+    clear_buffer();
     ++tries;
   } while (!is_valid_year(current_year, *year_of_birth) && tries != 3);
 
   if (tries == 3 && !is_valid_year(current_year, *year_of_birth))
   {
-    printf("Too many invalid input, aborting...");
+    printf("Too many invalid input, aborting...\n");
     return VALIDATION_FAILURE;
   }
   return SUCCESS;
@@ -85,7 +84,7 @@ return_code_t get_name_input(char* name)
     }
     printf("\nPlease enter patient's name (max 100 characters): ");
     scanf("%[^\n]s", name);
-    while ((getchar()) != '\n');
+    clear_buffer();
     ++tries;
   } while (strcmp(name, "") == 0 && tries != 3);
 
@@ -105,8 +104,8 @@ return_code_t get_phone_number_input(char* phone_number)
       printf("Invalid input!\n");
     }
     printf("Please enter patient's phone number [valid format 36701111111]: ");
-    scanf("%s", phone_number);
-    while ((getchar()) != '\n');
+    fgets(phone_number, PHONE_NUMBER_SIZE, stdin);
+    clear_buffer();
     ++tries;
   } while (!is_valid_phone_number(phone_number) && tries != 3);
 
@@ -128,7 +127,7 @@ return_code_t get_paid_input(char* ch)
     }
     printf("Please enter whether it's paid or not [y/n]: ");
     scanf("%c", ch);
-    while ((getchar()) != '\n');
+    clear_buffer();
     ++tries;
   } while (!is_valid_paid(*ch) && tries != 3);
 
@@ -140,13 +139,26 @@ return_code_t get_paid_input(char* ch)
   return SUCCESS;
 }
 
+void clear_buffer()
+{
+  while ((getchar()) != '\n');
+}
+
 void try_to_write_buffer(event_t* event)
 {
-  return_code_t rc;
+  return_code_t rc = FAILURE;
   do {
     pthread_mutex_lock(&lock);
     rc = write_buffer(buffer, event);
     pthread_mutex_unlock(&lock);
+  } while (rc != SUCCESS);
+}
+
+void try_to_write_buffer_lockfree(event_t* event)
+{
+  return_code_t rc = FAILURE;
+  do {
+    rc = write_buffer(buffer, event);
   } while (rc != SUCCESS);
 }
 
@@ -206,7 +218,7 @@ void handle_remove_option()
   if (cache.size != 0)
   {
     pair = lookup_patient(phone_number);
-    if (pair.second == NULL)
+    if (!pair.second)
     {
       printf("Patient doesn't exist!\n");
       return;
@@ -241,7 +253,7 @@ void handle_modify_input(patient_t* current_patient, size_t modify_index)
   char options[4] = "";
   memset(options, 0, strlen(options));
   scanf("%s", options);
-  while ((getchar()) != '\n');
+  clear_buffer();
   for (size_t i = 0; i < strlen(options) && options[i] != '\0'; ++i)
   {
     switch(options[i])
@@ -338,19 +350,24 @@ void handle_show_option()
   else
   {
     printf("Please see all the records below:\n\n");
+    // could be cached as well
+    int vaccinated = 0;
+    int not_vaccinated = 0;
     pthread_mutex_lock(&lock);
     for (size_t i = 0; i < cache.size; ++i)
     {
       print_patient(&cache.data[i]);
+      cache.data[i].vaccinated ? ++vaccinated : ++not_vaccinated;
     }
     printf("\n");
+    printf("Vaccinated: %d, not vaccinated: %d\n\n", vaccinated, not_vaccinated);
     pthread_mutex_unlock(&lock);
   }
 }
 
 void handle_invalid_input()
 {
-  printf("Invalid input...");
+  printf("Invalid input... For help press 'h'\n");
 }
 
 void handle_exit_option()
@@ -361,11 +378,50 @@ void handle_exit_option()
   try_to_write_buffer(&exit_event);
 }
 
+void handle_sim_option()
+{
+  size_t indexes[VACCINATION_CAPACITY];
+  size_t counter = 0;
+
+  for (size_t i = cache.waiting_list_hint; (i < cache.size && counter < VACCINATION_CAPACITY); ++i)
+  {
+    if (!cache.data[i].vaccinated)
+    {
+      indexes[counter] = i;
+      ++counter;
+    }
+  }
+  if (counter >= BUS_CAPACITY)
+  {
+    char buses_str[6] = "buses";
+    char bus_str[4] = "bus";
+    printf("The %s are waiting for patients...\n", counter == VACCINATION_CAPACITY ? buses_str : bus_str);
+    pthread_mutex_lock(&lock);
+    for (size_t i = 0; i < counter; ++i)
+    {
+      if (i == BUS_CAPACITY && counter < VACCINATION_CAPACITY) break;
+      event_t event;
+      event.type = VACCINATION;
+      event.index = indexes[i];
+      event.patient = &cache.data[indexes[i]];
+      try_to_write_buffer_lockfree(&event);
+      size_t bus_number = i < BUS_CAPACITY ? 1 : 2;
+      printf("SMS - Bus%zu are waiting for patient: ", bus_number);
+      print_patient(event.patient);
+    }
+    pthread_mutex_unlock(&lock);
+  }
+  else
+  {
+    printf("Not enough patient for simulating vaccination!\n");
+  }
+}
+
 bool handle_user_input()
 {
   char option = '\0';
   scanf("%c", &option);
-  while ((getchar()) != '\n');
+  clear_buffer();
   switch (option) {
     case 'a':
       handle_add_option();
@@ -378,6 +434,9 @@ bool handle_user_input()
       break;
     case 's':
       handle_show_option();
+      break;
+    case 'n':
+      handle_sim_option();
       break;
     case 'e':
       printf("Good bye!\n");
@@ -393,13 +452,19 @@ bool handle_user_input()
   return true;
 }
 
-void* main_handler()
+void initialize_cache()
 {
   //printf("Main: Initializing cache...\n");
   cache.size = 0;
   cache.capacity = INITIAL_CACHE_SIZE;
+  cache.waiting_list_hint = 0;
+}
+
+void* main_handler()
+{
+  initialize_cache();
   //printf("Main: Initializing buffer...\n");
-  buffer = initialize_buffer();
+  initialize_buffer();
 
   bool running = true;
   printf("Welcome to our London Data Center! To see available commands please press 'h'\n\n");
@@ -416,13 +481,14 @@ void wait_for_buffer_ready()
   bool running = true;
   while (running)
   {
-    //printf("Reflex: Waiting for buffer...\n");
-    if (buffer->data != NULL)
+    if (buffer && buffer->data)
     {
-      //printf("Reflex: Buffer is ready...\n");
-      return;
+      running = false;
     }
-    sleep(1);
+    else
+    {
+      sleep(1);
+    }
   }
 }
 
@@ -448,6 +514,7 @@ void process_modify_event(event_t* event)
   modify_patient(&cache, event->patient, event->index);
   pthread_mutex_unlock(&lock);
 }
+
 void process_delete_event(event_t* event)
 {
   pthread_mutex_lock(&lock);
@@ -458,7 +525,8 @@ void process_delete_event(event_t* event)
 void on_exit_callback()
 {
   FILE* fptr = open_file("wb");
-  if (fptr != NULL) {
+  if (fptr)
+  {
     pthread_mutex_lock(&lock);
     write_file(fptr, &cache);
     pthread_mutex_unlock(&lock);
@@ -467,16 +535,62 @@ void on_exit_callback()
   deallocate_buffer(buffer);
 }
 
+void simulate_vaccination(bus_t* bus0, bus_t* bus1)
+{
+  bus_t* current_bus = bus0;
+  bool processed = false;
+  bool waitlist_hint_updated = false;
+  printf("\n\n");
+  while(!processed)
+  {
+    size_t num = current_bus == bus0 ? 1 : 2;
+    if (current_bus)
+    {
+      for (size_t i = 0; i < current_bus->size; ++i)
+      {
+        int chance = rand() % 10;
+        patient_t* patient = current_bus->events[i]->patient;
+        if (chance % 9 != 0)
+        {
+          printf("Bus%zu is vaccinating patient: ", num);
+          patient->vaccinated = true;
+        }
+        else
+        {
+          if (!waitlist_hint_updated)
+          {
+            cache.waiting_list_hint = current_bus->events[i]->index;
+            waitlist_hint_updated = true;
+          }
+          printf("Patient has never arrived: ");
+        }
+        print_patient(patient);
+      }
+      if (current_bus == bus1) processed = true;
+      if (current_bus == bus0) current_bus = bus1;
+    }
+    if (!waitlist_hint_updated)
+    {
+      cache.waiting_list_hint = 0; //invalidate hint
+    }
+  }
+}
+
 bool process_events(event_t* events, size_t read_count)
 {
-  for (size_t i = 0; i < read_count; ++i) {
-    if (events[i].type != EXIT)
+  
+  bus_t* bus0 = allocate_bus_t();
+  bus_t* bus1 = allocate_bus_t();
+  for (size_t i = 0; i < read_count; ++i) 
+  {
+   /*  if (events[i].type != EXIT)
     {
       printf("Processing event: event.type %d event.index %ld event.patient: ", events[i].type, events[i].index);
       print_patient(events[i].patient);
-    }
+    } */
 
-    switch(events[i].type) {
+    switch(events[i].type) 
+    {
       case ADD:
         process_add_event(&events[i]);
         break;
@@ -486,7 +600,12 @@ bool process_events(event_t* events, size_t read_count)
       case DELETE:
         process_delete_event(&events[i]);
         break;
+      case VACCINATION:
+        bus0->size != BUS_CAPACITY ? add_event_to(bus0, &events[i]) : add_event_to(bus1, &events[i]);
+        break;
       case EXIT:
+        deallocate_bus_t(bus0);
+        deallocate_bus_t(bus1);
         on_exit_callback();
         return false;
       case INVALID:
@@ -494,16 +613,28 @@ bool process_events(event_t* events, size_t read_count)
         break;
     }
   }
+  if (bus0->size)
+  {
+    simulate_vaccination(bus0, bus1);
+  }
+  deallocate_bus_t(bus0);
+  deallocate_bus_t(bus1);
   return true;
 }
 
 bool poll()
 {
+  pthread_mutex_lock(&lock);
   size_t buff_size = buffer->size;
+  pthread_mutex_unlock(&lock);
+
   event_t events[CIRCULAR_BUFFER_SIZE];
   bool result = true;
-  if (buff_size > 0) {
-    for (size_t i = 0; i < buff_size; ++i) {
+
+  if (buff_size) 
+  {
+    for (size_t i = 0; i < buff_size; ++i) 
+    {
       try_to_read_buffer(events, i);
     }
     result = process_events(events, buff_size);
@@ -514,11 +645,12 @@ bool poll()
 void* reflex_handler()
 {
   wait_for_buffer_ready();
-  char option[3] = "rb";
-  FILE* fptr = open_file(option);
-  if (fptr != NULL)
+  FILE* fptr = open_file("rb");
+  if (fptr)
   {
+    pthread_mutex_lock(&lock);
     read_file(fptr, &cache);
+    pthread_mutex_unlock(&lock);
     close_file(fptr);
   }
   bool running = true;
@@ -531,6 +663,8 @@ void* reflex_handler()
 
 int run()
 {
+  srand(time(NULL));
+
   time_t t = time(NULL);
   struct tm tm = *localtime(&t);
   current_year = tm.tm_year + 1900;
@@ -546,10 +680,12 @@ int run()
 
 
   int rc;
-  for (int i = 0; i < NUM_THREADS; ++i) {
+  for (int i = 0; i < NUM_THREADS; ++i) 
+  {
     void* fn = thread_ids[i] == MAIN_THREAD_ID ? main_handler : reflex_handler;
     rc = pthread_create(&threads[i], NULL, fn, NULL);
-    if (rc) {
+    if (rc) 
+    {
       printf("Error:unable to create thread, %d\n", rc);
       return 1;
     }

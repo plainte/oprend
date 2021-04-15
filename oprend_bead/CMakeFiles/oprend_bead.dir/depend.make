@@ -4,6 +4,7 @@
 CMakeFiles/oprend_bead.dir/App.c.o: App.c
 CMakeFiles/oprend_bead.dir/App.c.o: App.h
 CMakeFiles/oprend_bead.dir/App.c.o: io/FileHandler.h
+CMakeFiles/oprend_bead.dir/App.c.o: lib/Bus.h
 CMakeFiles/oprend_bead.dir/App.c.o: lib/Cache.h
 CMakeFiles/oprend_bead.dir/App.c.o: lib/Event.h
 CMakeFiles/oprend_bead.dir/App.c.o: lib/Patient.h
@@ -19,6 +20,15 @@ CMakeFiles/oprend_bead.dir/io/FileHandler.c.o: lib/Patient.h
 CMakeFiles/oprend_bead.dir/io/FileHandler.c.o: types/Defines.h
 CMakeFiles/oprend_bead.dir/io/FileHandler.c.o: types/Enums.h
 CMakeFiles/oprend_bead.dir/io/FileHandler.c.o: util/Pair.H
+
+CMakeFiles/oprend_bead.dir/lib/Bus.c.o: lib/Bus.c
+CMakeFiles/oprend_bead.dir/lib/Bus.c.o: lib/Bus.h
+CMakeFiles/oprend_bead.dir/lib/Bus.c.o: lib/Event.h
+CMakeFiles/oprend_bead.dir/lib/Bus.c.o: lib/Patient.h
+CMakeFiles/oprend_bead.dir/lib/Bus.c.o: types/Defines.h
+CMakeFiles/oprend_bead.dir/lib/Bus.c.o: types/Enums.h
+CMakeFiles/oprend_bead.dir/lib/Bus.c.o: util/CircularBuffer.h
+CMakeFiles/oprend_bead.dir/lib/Bus.c.o: util/Pair.H
 
 CMakeFiles/oprend_bead.dir/lib/Cache.c.o: lib/Cache.c
 CMakeFiles/oprend_bead.dir/lib/Cache.c.o: lib/Cache.h
@@ -43,6 +53,7 @@ CMakeFiles/oprend_bead.dir/lib/Patient.c.o: util/Pair.H
 
 CMakeFiles/oprend_bead.dir/main.c.o: App.h
 CMakeFiles/oprend_bead.dir/main.c.o: io/FileHandler.h
+CMakeFiles/oprend_bead.dir/main.c.o: lib/Bus.h
 CMakeFiles/oprend_bead.dir/main.c.o: lib/Cache.h
 CMakeFiles/oprend_bead.dir/main.c.o: lib/Event.h
 CMakeFiles/oprend_bead.dir/main.c.o: lib/Patient.h

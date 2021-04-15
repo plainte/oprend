@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/oprend_bead.dir/App.c.o"
   "CMakeFiles/oprend_bead.dir/io/FileHandler.c.o"
+  "CMakeFiles/oprend_bead.dir/lib/Bus.c.o"
   "CMakeFiles/oprend_bead.dir/lib/Cache.c.o"
   "CMakeFiles/oprend_bead.dir/lib/Event.c.o"
   "CMakeFiles/oprend_bead.dir/lib/Patient.c.o"

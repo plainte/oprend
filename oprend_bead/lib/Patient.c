@@ -57,10 +57,13 @@ return_code_patient_pair_t create_patient(const char* name, uint16_t year_of_bir
   if (*rc != SUCCESS) {
     return rc_patient;
   }
+
   strncpy(patient->name, name, strlen(name));
   patient->year_of_birth = year_of_birth;
   strncpy(patient->phone_number, phone_number, PHONE_NUMBER_SIZE);
   patient->paid = paid;
+  patient->vaccinated = false;
+
   if (!strcmp(patient->name, name) || !strcmp(patient->phone_number, phone_number))
   {
     return rc_patient;
@@ -117,12 +120,16 @@ void modify_patient_paid(patient_t* patient, bool paid)
 
 static const char* paid_str = "paid";
 static const char* not_paid = "not paid";
+static const char* vaccinated = "vaccinated";
+static const char* not_vaccinated = "not vaccinated";
 
 void print_patient(patient_t* patient)
 {
-  printf("%s %d %s %s\n",
+  printf("name: %s, born: %d, phone number: %s, paid: %s, vaccinated: %s\n",
          patient->name,
          patient->year_of_birth,
          patient->phone_number,
-         (patient->paid ? paid_str : not_paid));
+         (patient->paid ? paid_str : not_paid),
+         (patient->vaccinated ? vaccinated : not_vaccinated)
+        );
 }

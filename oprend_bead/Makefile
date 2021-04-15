@@ -177,6 +177,33 @@ io/FileHandler.c.s:
 	$(MAKE) -f CMakeFiles/oprend_bead.dir/build.make CMakeFiles/oprend_bead.dir/io/FileHandler.c.s
 .PHONY : io/FileHandler.c.s
 
+lib/Bus.o: lib/Bus.c.o
+
+.PHONY : lib/Bus.o
+
+# target to build an object file
+lib/Bus.c.o:
+	$(MAKE) -f CMakeFiles/oprend_bead.dir/build.make CMakeFiles/oprend_bead.dir/lib/Bus.c.o
+.PHONY : lib/Bus.c.o
+
+lib/Bus.i: lib/Bus.c.i
+
+.PHONY : lib/Bus.i
+
+# target to preprocess a source file
+lib/Bus.c.i:
+	$(MAKE) -f CMakeFiles/oprend_bead.dir/build.make CMakeFiles/oprend_bead.dir/lib/Bus.c.i
+.PHONY : lib/Bus.c.i
+
+lib/Bus.s: lib/Bus.c.s
+
+.PHONY : lib/Bus.s
+
+# target to generate assembly for a file
+lib/Bus.c.s:
+	$(MAKE) -f CMakeFiles/oprend_bead.dir/build.make CMakeFiles/oprend_bead.dir/lib/Bus.c.s
+.PHONY : lib/Bus.c.s
+
 lib/Cache.o: lib/Cache.c.o
 
 .PHONY : lib/Cache.o
@@ -354,6 +381,9 @@ help:
 	@echo "... io/FileHandler.o"
 	@echo "... io/FileHandler.i"
 	@echo "... io/FileHandler.s"
+	@echo "... lib/Bus.o"
+	@echo "... lib/Bus.i"
+	@echo "... lib/Bus.s"
 	@echo "... lib/Cache.o"
 	@echo "... lib/Cache.i"
 	@echo "... lib/Cache.s"

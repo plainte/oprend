@@ -9,6 +9,7 @@
 typedef struct Cache {
     size_t size;
     size_t capacity;
+    size_t waiting_list_hint;
     patient_t data[INITIAL_CACHE_SIZE];
 } cache_t;
 

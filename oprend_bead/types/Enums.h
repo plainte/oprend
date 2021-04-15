@@ -15,7 +15,8 @@ typedef enum ReturnCode {
     MISSING_CAPACITY,
     INVALID_CAPACITY,
     BUFFER_IS_EMPTY,
-    INVALID_PHONE_NUMBER
+    INVALID_PHONE_NUMBER,
+    FAILURE
 } return_code_t;
 
 typedef enum EventType {
@@ -23,5 +24,6 @@ typedef enum EventType {
     ADD,
     MODIFY,
     DELETE,
+    VACCINATION,
     EXIT
 } event_type_t;

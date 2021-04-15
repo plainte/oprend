@@ -27,6 +27,8 @@ time.h
 -
 lib/Cache.h
 /mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/lib/Cache.h
+lib/Bus.h
+/mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/lib/Bus.h
 
 /mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/io/FileHandler.h
 ../types/Enums.h
@@ -34,6 +36,18 @@ lib/Cache.h
 ../lib/Patient.h
 /mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/lib/Patient.h
 ../lib/Cache.h
+/mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/lib/Cache.h
+stdio.h
+-
+
+/mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/lib/Bus.h
+Event.h
+/mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/lib/Event.h
+../types/Defines.h
+/mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/types/Defines.h
+
+/mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/lib/Cache.c
+Cache.h
 /mnt/c/Users/molna/Desktop/programming/cpp/oprend/oprend_bead/lib/Cache.h
 stdio.h
 -
